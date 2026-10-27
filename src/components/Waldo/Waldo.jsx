@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import shira from '../../assets/shira.png';
 
-export default function Waldo({ changeBackground }) {
+export default function Waldo({ changeBackground, isLoaded }) {
     const [placement, setPlacement] = useState({ x: 100, y: 100 });
 
     const newPlace = () => {
@@ -12,25 +12,27 @@ export default function Waldo({ changeBackground }) {
     };
 
     return (
-        <div 
-            className="waldo" 
-            onClick={() => {
-                newPlace()
-                changeBackground()
-            }}
-            style={{
-                position: 'absolute',
-                bottom: `${placement.y}px`,
-                left: `${placement.x}px`,
-                width: '100px',   
-                height: '200px',  
-                backgroundImage: `url(${shira})`,
-                backgroundSize: 'cover',        
-                backgroundPosition: 'center',
-                cursor: 'pointer',
-                userSelect: 'none',
-            }}
-        >
-        </div>
+        <>
+            {isLoaded && <div 
+                className="waldo" 
+                onClick={() => {
+                    newPlace()
+                    changeBackground()
+                }}
+                style={{
+                    position: 'absolute',
+                    bottom: `${placement.y}px`,
+                    left: `${placement.x}px`,
+                    width: '100px',   
+                    height: '200px',  
+                    backgroundImage: `url(${shira})`,
+                    backgroundSize: 'cover',        
+                    backgroundPosition: 'center',
+                    cursor: 'pointer',
+                    userSelect: 'none',
+                }}
+            >
+            </div>}
+        </>
     );
 }

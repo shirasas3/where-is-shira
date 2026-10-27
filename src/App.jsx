@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Waldo from './components/Waldo/Waldo.jsx'
 import park from './assets/backgrounds/waldo_01_park.png'
 import nightCity from './assets/backgrounds/waldo_02_night_city.png'
@@ -14,8 +14,11 @@ import './App.css'
 
 export default function App() {
   const [background, setBackground] = useState(park);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const changeBackground = () => {
+    setIsLoaded(false); // Hide Waldo while loading the next background
+    
     const backgroundList = [park, nightCity, mall, stadium, beach, streetParade, market, concert, school, library]
     let choosenBackgroundIndex = Math.floor(Math.random() * backgroundList.length);
     let choosenBackground = backgroundList[choosenBackgroundIndex];
@@ -29,11 +32,23 @@ export default function App() {
 
   return (
     <div className="app"
-    style={{
-      backgroundImage: `url(${background})`, 
-      backgroundSize: 'cover', 
-    }}>
-      <Waldo changeBackground={changeBackground}/>
+      style={{
+        backgroundImage: `url(${background})`, 
+        backgroundSize: 'cover', 
+        position: 'relative',
+        width: '100vw',
+        height: '100vh',
+      }}
+    >
+      {/* Hidden img tag safely detects when the background asset finishes downloading */}
+      <img 
+        src={background} 
+        alt="preload background" 
+        onLoad={() => setIsLoaded(true)} 
+        style={{ display: 'none' }} 
+      />
+
+      <Waldo changeBackground={changeBackground} isLoaded={isLoaded}/>
     </div>
   )
 }
